@@ -1,13 +1,19 @@
-
-import pickle
 import uvicorn
-import numpy as np
+import numpy.typing as npt
 
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi import Security, Depends, FastAPI, HTTPException
 from fastapi.security.api_key import APIKeyQuery
 from starlette.status import HTTP_403_FORBIDDEN
+
+import warnings
+from fastai.vision.all import *
+from fastcore.parallel import *
+import pickle
+
+
+warnings.filterwarnings('ignore')
 
 
 API_KEY = "1234567asdfgh"
@@ -35,15 +41,14 @@ def get_api_key(api_key_query: str = Security(api_key_query)):
 
 
 class CNN(BaseModel):
-    img: np.array
+    img = np.ndarray
 
 
 # Indicación para que se ejecute en cuanto inicie la api
 @app.on_event("startup")
 def load_model():
     global model_cnn  # Función para que sea global la variable
-    with open(r"./model/CNN_Resnet.pkl", "rb") as f:
-        model_cnn = pickle.load(f)
+    model_cnn = load_learner('.\model\CNN_Resnet.pkl', cpu=True)
 
 
 @app.get("/")
@@ -52,13 +57,10 @@ def home():
 
 
 @app.get("/api/v1/classify")
-def classify_iris(cnn: CNN):#, APIKey=Depends(get_api_key)):
-    params = [cnn.img]
-    pred = model_cnn.predict(params)
-    dict_condition = {0: "Normal",
-                 1: "With Pneumonia"}
-    return {"Condition": dict_condition.get(pred[0]),
-            "Desc": "Predicción hecha correctamente"}
+def classify_condition(cnn: CNN):#, APIKey=Depends(get_api_key)):
+    pred = model_cnn.predict(cnn['img'])[0]
+    return {"Condition": pred,
+            "Desc": "Successfully predicted"}
 
 
 if __name__ == "__main__":

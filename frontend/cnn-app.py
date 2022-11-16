@@ -2,44 +2,66 @@ import streamlit as st
 import pandas as pd
 import requests
 import json
+from PIL import Image
+import io
+
+
+###
+import warnings
+from fastai.vision.all import *
+from fastcore.parallel import *
+import pickle
+import numpy as np
+
+
+warnings.filterwarnings('ignore')
+
+learn = load_learner('.\model\CNN_Resnet.pkl', cpu=True)
+
+
+###
+
 
 st.write("""
-# Simple Iris Flower Prediction App
-This app predicts the **Iris flower** type!
+# Convolutional Neural Network App
+This app predicts wether you have pneumonia or not!
 """)
 
-st.sidebar.header('User Input Parameters')
+st.markdown('Upload your image!!')
 
-def user_input_features():
-    sepal_length = st.sidebar.slider('Sepal length', 4.3, 7.9, 5.4)
-    sepal_width = st.sidebar.slider('Sepal width', 2.0, 4.4, 3.4)
-    petal_length = st.sidebar.slider('Petal length', 1.0, 6.9, 1.3)
-    petal_width = st.sidebar.slider('Petal width', 0.1, 2.5, 0.2)
-    data = {'sl': sepal_length,
-            'sw': sepal_width,
-            'pl': petal_length,
-            'pw': petal_width}
-    features = pd.DataFrame(data, index=[0])
-    return data, features
+def load_image(image_file):
+	img = Image.open(image_file)
+	return img
+
+st.subheader("Image")
+image_file = st.file_uploader("Upload Images", type=["png","jpg","jpeg"])
+
+if image_file is not None:
+
+    
+        data  = {'img':str(np.array(load_image(image_file)))}
+
+        st.write(data)
+
+        # To See details
+        file_details = {"filename":image_file.name, "filetype":image_file.type,
+                        "filesize":image_file.size}  
+        st.write(file_details)
+
+        # To View Uploaded Image
+        st.image(load_image(image_file),width=450)
 
 
-data, df = user_input_features()
+        if st.button("Predict"):
+            url = "http://localhost:8000/api/v1/classify" # Aquí se pone la IP del contenedor de back "IP/api/v1/classify""
+            headers = {
+                'Content-Type': 'application/json'
+            }
+            response = requests.request("GET", url, data=json.dumps(data))
+            prediction = json.loads(response.text)#["Condition"]
+            st.subheader('Prediction')
+            st.write(prediction)
 
-st.subheader('User Input parameters')
-st.write(df)
+        # st.write(learn.predict(data['img'])[0])
 
 
-
-
-
-# if st.button("Predict"):
-#     url = "http://localhost:8000/api/v1/classify" # Aquí se pone la IP del contenedor de back "IP/api/v1/classify""
-#     headers = {
-#         'Content-Type': 'application/json'
-#     }
-#     response = requests.request("GET", url, headers=headers, data=json.dumps(data))
-#     prediction = json.loads(response.text)["Iris flower"]
-#     st.subheader('Prediction')
-#     st.write(prediction)
-
-# docker build -t backend-api-aris:v1 .
