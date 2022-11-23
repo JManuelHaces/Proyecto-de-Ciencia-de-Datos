@@ -1,0 +1,5 @@
+fastai==2.7.10
+fastcore==1.5.27
+numpy==1.23.4
+requests==2.28.1
+streamlit==1.14.1

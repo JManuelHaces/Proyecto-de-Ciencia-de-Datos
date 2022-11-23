@@ -1,8 +1,8 @@
 import uvicorn
 
 from fastapi import FastAPI
-from fastapi import UploadFile, File
-from fastapi import Security, Depends, FastAPI
+from fastapi import UploadFile
+from fastapi import FastAPI
 
 import warnings
 from fastai.vision.all import *

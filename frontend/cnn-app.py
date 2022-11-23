@@ -3,12 +3,10 @@ import requests
 import json
 
 
-###
 import warnings
 from fastai.vision.all import *
 from fastcore.parallel import *
-import pickle
-import numpy as np
+
 
 
 warnings.filterwarnings('ignore')

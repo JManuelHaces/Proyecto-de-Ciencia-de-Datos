@@ -1,20 +1,17 @@
 FROM python:3.9-slim-buster
 
-WORKDIR /code
+WORKDIR /code_front
 
 RUN apt-get update && apt-get install -y procps && pip install -U pip \
     && rm /etc/localtime  \
     && ln -s /usr/share/zoneinfo/America/Mexico_City /etc/localtime
 
-COPY ./requirements.txt /code/requirements.txt
+COPY ./requirements.txt /code_front/requirements.txt
 
 RUN pip install -r ./requirements.txt
 
-COPY ./model /code/model
+COPY ./cnn-app.py /code_front/cnn-app.py
 
-COPY ./main.py /code/main.py
+EXPOSE 8501
 
-
-EXPOSE 8001
-
-CMD ["uvicorn", "main:app", "--host", "localhost", "--port", "8001"]
+CMD ["streamlit", "run", "cnn-app.py", "--server.port=8501", "--server.address=localhost"]
