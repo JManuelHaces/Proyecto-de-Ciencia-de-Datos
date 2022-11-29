@@ -10,7 +10,7 @@ COPY ./requirements.txt /code/requirements.txt
 
 RUN pip install -r ./requirements.txt
 
-COPY ./model /code/model
+COPY ./model/CNN_Resnet.pkl  /code/model/CNN_Resnet.pkl
 
 COPY ./main.py /code/main.py
 
