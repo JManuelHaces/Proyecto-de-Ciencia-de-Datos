@@ -1,12 +1,17 @@
+import pathlib
+
+plt = platform.system()
+if plt == 'Linux': pathlib.WindowsPath = pathlib.PosixPath
+
 import uvicorn
 
 from fastapi import FastAPI
 from fastapi import UploadFile
-from fastapi import FastAPI
 
 import warnings
 from fastai.vision.all import *
 from fastcore.parallel import *
+
 
 warnings.filterwarnings('ignore')
 
@@ -28,7 +33,7 @@ app = FastAPI(
 @app.on_event("startup")
 def load_model():
     global model_cnn  # Función para que sea global la variable
-    model_cnn = load_learner('.\model\CNN_Resnet.pkl', cpu=True)
+    model_cnn = load_learner('CNN_Resnet.pkl', cpu=True)
 
 
 @app.get("/")
