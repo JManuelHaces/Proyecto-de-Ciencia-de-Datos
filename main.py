@@ -1,5 +1,5 @@
 import pathlib
-
+import platform
 plt = platform.system()
 if plt == 'Linux': pathlib.WindowsPath = pathlib.PosixPath
 
@@ -50,4 +50,4 @@ async def create_upload_file(file: UploadFile):
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="localhost", port=8001, reload=False)
+    uvicorn.run("main:app", host="0.0.0.0", port=8001, reload=False)

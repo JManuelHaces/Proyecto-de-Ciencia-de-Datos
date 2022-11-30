@@ -10,11 +10,11 @@ COPY ./requirements.txt /code/requirements.txt
 
 RUN pip install -r ./requirements.txt
 
-COPY ./CNN_Resnet.pkl  code/CNN_Resnet.pkl
+COPY ./CNN_Resnet.pkl  /code/CNN_Resnet.pkl
 
 COPY ./main.py /code/main.py
 
 
 EXPOSE 8001
 
-CMD ["uvicorn", "main:app", "--host", "localhost", "--port", "8001"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001"]
