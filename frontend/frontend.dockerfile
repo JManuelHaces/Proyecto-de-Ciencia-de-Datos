@@ -14,4 +14,4 @@ COPY ./cnn-app.py /code_front/cnn-app.py
 
 EXPOSE 8501
 
-CMD ["streamlit", "run", "cnn-app.py", "--server.port=8501", "--server.address=localhost"]
+CMD ["streamlit", "run", "cnn-app.py", "--server.port=8501", "--server.address=0.0.0.0"]
