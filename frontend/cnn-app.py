@@ -40,10 +40,20 @@ if image_file is not None:
             headers = {
                 'Content-Type': 'application/json'
             }
-            response = requests.post(url, files={"file":image_file.getbuffer()})
+            st.write("---")
+            st.write("Loading Prediction...")
+            loading = st.progress(0)
+            # Moviendo la barra de carga hasta que termine
+            for percent_complete in range(100):
+                time.sleep(0.01)
+                loading.progress(percent_complete + 1)
+            time.sleep(1.5)
+            response = requests.post(url, files={"file": image_file.getbuffer()})
             prediction = json.loads(response.text)["Condition"]
-            st.subheader('Prediction')
-            st.write(prediction)
+            if prediction.upper() == 'NORMAL':
+                st.write(f'The patience is {prediction}')
+            else:
+                st.write(f'The patience has {prediction}')
 
    
 
