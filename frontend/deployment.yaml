@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: frontend
 spec:
-  replicas: 4
+  replicas: 1
   selector:
     matchLabels:
       role: redcnn
@@ -14,12 +14,12 @@ spec:
     spec:
       containers:
         - name: cnn-frontend
-          image: registry-1.docker.io/if722399/cnn-app:v1
+          image: docker.io/if722399/cnn-app:v1
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8501
       imagePullSecrets:
-        - name: pneumonia_detector
+        - name: regcred
 
 ---
 apiVersion: v1
