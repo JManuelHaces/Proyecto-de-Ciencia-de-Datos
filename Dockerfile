@@ -14,7 +14,7 @@ COPY ./CNN_Resnet.pkl  /code/CNN_Resnet.pkl
 
 COPY ./main.py /code/main.py
 
-COPY ./frontend/cnn-app.py /code/frontend/cnn-app.py
+COPY frontend/cnn-app.py /code/frontend/cnn-app.py
 
 COPY ./start.sh ./start.sh
 

@@ -4,7 +4,6 @@ from io import BytesIO
 import matplotlib.pyplot as plt
 from data.data import test_neumonia, test_normal, train_neumonia, train_normal
 import functions as fn
-import cv2
 plt.style.use('ggplot')
 
 

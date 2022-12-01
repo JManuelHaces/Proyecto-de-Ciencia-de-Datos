@@ -10,7 +10,7 @@ COPY ./requirements.txt /code_front/requirements.txt
 
 RUN pip install -r ./requirements.txt
 
-COPY ./cnn-app.py /code_front/cnn-app.py
+COPY cnn-app.py /code_front/cnn-app.py
 
 EXPOSE 8501
 
